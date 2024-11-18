@@ -59,9 +59,9 @@ CREATE TABLE DiscountOnOrder (
 
 CREATE TABLE BasePrice (
 	base_price_id INT AUTO_INCREMENT,
-	crust_type ENUM('thin', 'original', 'pan', 'gluten free'),
-	size ENUM('personal', 'medium', 'large', 'X-Large'),
-	price DECIMAL(10, 2),
+	--crust_type ENUM('thin', 'original', 'pan', 'gluten free'),
+	--size ENUM('personal', 'medium', 'large', 'X-Large'),
+	--price DECIMAL(10, 2),
 	cost DECIMAL(10, 2),
 	PRIMARY KEY(base_price_id)
 );
