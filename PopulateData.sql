@@ -1,5 +1,5 @@
 -- Insert data into Toppings table
-INSERT INTO Toppings (name, price_to_customer, price_to_business, current_inventory_level, amount_used_personal, amount_used_medium, amount_used_large, amount_used_xlarge)
+INSERT INTO Toppings (customer_name, price_to_customer, price_to_business, current_inventory_level, amount_used_personal, amount_used_medium, amount_used_large, amount_used_xlarge)
 VALUES 
 ('Pepperoni', 1.25, 0.2, 100, 2, 2.75, 3.5, 4.5),
 ('Sausage', 1.25, 0.15, 100, 2.5, 3, 3.5, 4.25),
@@ -20,7 +20,7 @@ VALUES
 ('Bacon', 1.5, 0.25, 89, 1, 1.5, 2, 3);
 
 -- Insert data into Discount table
-INSERT INTO Discount (name, percentage_off, amount_off)
+INSERT INTO Discount (customer_name, percentage_off, amount_off)
 VALUES 
 ('employee', 15, NULL),
 ('Lunch Special Medium', NULL, 1),
@@ -31,7 +31,7 @@ VALUES
 -- Insert data into Orders table
 
 -- Insert data into Customer table
-INSERT INTO Customer (name, phone_number, address)
+INSERT INTO Customer (customer_name, phone_number, customer_address)
 VALUES
 ('Andrew Wilkes-Krier', '740-254-5861', '115 Party Blvd, Athens OH 45701'),
 ('Matt Engers', '740-474-9953', NULL),
@@ -44,17 +44,17 @@ VALUES
 (3.68, 13.50, 'dine-in', NULL),
 (3.23, 10.60, 'dine-in', NULL),
 (1.40, 6.75, 'dine-in', NULL),
-(3.30 * 6, 10.75 * 6, 'pickup', (SELECT customer_id FROM Customer WHERE name = 'Andrew Wilkes-Krier')),
-(5.59 + 5.59 + 5.68, 14.50 + 17 + 14.00, 'delivery', (SELECT customer_id FROM Customer WHERE name = 'Andrew Wilkes-Krier')),
-(7.85, 16.85, 'pickup', (SELECT customer_id FROM Customer WHERE name = 'Matt Engers')),
-(3.20, 13.25, 'delivery', (SELECT customer_id FROM Customer WHERE name = 'Frank Turner')),
-(3.75 + 2.55, 12 + 12, 'delivery', (SELECT customer_id FROM Customer WHERE name = 'Milo Auckerman'));
+(3.30 * 6, 10.75 * 6, 'pickup', (SELECT customer_id FROM Customer WHERE customer_name = 'Andrew Wilkes-Krier')),
+(5.59 + 5.59 + 5.68, 14.50 + 17 + 14.00, 'delivery', (SELECT customer_id FROM Customer WHERE customer_name = 'Andrew Wilkes-Krier')),
+(7.85, 16.85, 'pickup', (SELECT customer_id FROM Customer WHERE customer_name = 'Matt Engers')),
+(3.20, 13.25, 'delivery', (SELECT customer_id FROM Customer WHERE customer_name = 'Frank Turner')),
+(3.75 + 2.55, 12 + 12, 'delivery', (SELECT customer_id FROM Customer WHERE customer_name = 'Milo Auckerman'));
 
 -- Insert data into DiscountOnOrder table
 INSERT INTO DiscountOnOrder (order_id, discount_id)
 VALUES
-((SELECT order_id FROM Orders WHERE total_price = 13.50), (SELECT discount_id FROM Discount WHERE name = 'Lunch Special Large')),
-((SELECT order_id FROM Orders WHERE total_price = 10.60), (SELECT discount_id FROM Discount WHERE name = 'Lunch Special Medium')),
-((SELECT order_id FROM Orders WHERE total_price = 16.85), (SELECT discount_id FROM Discount WHERE name = 'Specialty Pizza')),
-((SELECT order_id FROM Orders WHERE total_price = 14.50 + 17 + 14.00), (SELECT discount_id FROM Discount WHERE name = 'Gameday special')),
-((SELECT order_id FROM Orders WHERE total_price = 12 + 12), (SELECT discount_id FROM Discount WHERE name = 'employee'));
+((SELECT order_id FROM Orders WHERE total_price = 13.50), (SELECT discount_id FROM Discount WHERE customer_name = 'Lunch Special Large')),
+((SELECT order_id FROM Orders WHERE total_price = 10.60), (SELECT discount_id FROM Discount WHERE customer_name = 'Lunch Special Medium')),
+((SELECT order_id FROM Orders WHERE total_price = 16.85), (SELECT discount_id FROM Discount WHERE customer_name = 'Specialty Pizza')),
+((SELECT order_id FROM Orders WHERE total_price = 14.50 + 17 + 14.00), (SELECT discount_id FROM Discount WHERE customer_name = 'Gameday special')),
+((SELECT order_id FROM Orders WHERE total_price = 12 + 12), (SELECT discount_id FROM Discount WHERE customer_name = 'employee'));
