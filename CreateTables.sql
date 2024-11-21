@@ -1,5 +1,5 @@
 CREATE TABLE Toppings (
-	topping_id INT AUTO_INCREMENT,
+	topping_id INT,
 	name VARCHAR(50),
 	current_inventory_level INT,
 	price_to_customer DECIMAL(10, 2),
@@ -12,7 +12,7 @@ CREATE TABLE Toppings (
 );
 
 CREATE TABLE Pizza (
-	pizza_id INT AUTO_INCREMENT,
+	pizza_id INT,
 	crust_type ENUM('thin', 'original', 'pan', 'gluten free'),
 	size ENUM('personal', 'medium', 'large', 'X-Large'),
 	price DECIMAL(10, 2),
@@ -34,7 +34,7 @@ CREATE TABLE ToppingsOnPizza (
 );
 
 CREATE TABLE Discount (
-	discount_id INT AUTO_INCREMENT,
+	discount_id INT,
 	name VARCHAR(50),
 	amount_off DECIMAL(10, 2),
 	percentage_off DECIMAL(5, 2),
@@ -58,7 +58,7 @@ CREATE TABLE DiscountOnOrder (
 );
 
 CREATE TABLE BasePrice (
-	base_price_id INT AUTO_INCREMENT,
+	base_price_id INT,
 	--crust_type ENUM('thin', 'original', 'pan', 'gluten free'),
 	--size ENUM('personal', 'medium', 'large', 'X-Large'),
 	--price DECIMAL(10, 2),
@@ -67,7 +67,7 @@ CREATE TABLE BasePrice (
 );
 
 CREATE TABLE Orders (
-	order_id INT AUTO_INCREMENT,
+	order_id INT,
 	total_cost DECIMAL(10, 2),
 	total_price DECIMAL(10, 2),
 	order_type ENUM('dine-in', 'pickup', 'delivery'),
@@ -77,7 +77,7 @@ CREATE TABLE Orders (
 );
 
 CREATE TABLE Customer (
-	customer_id INT AUTO_INCREMENT,
+	customer_id INT,
 	name VARCHAR(100),
 	phone_number VARCHAR(15),
 	address VARCHAR(255),
@@ -105,7 +105,7 @@ CREATE TABLE DineIn (
 );
 
 CREATE TABLE Seats (
-	seat_id INT AUTO_INCREMENT,
+	seat_id INT,
 	order_id INT,
 	table_number INT,
 	seat_number INT,
