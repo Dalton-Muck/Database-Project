@@ -1,5 +1,5 @@
 -- Insert data into Toppings table
-INSERT INTO Toppings (customer_name, price_to_customer, price_to_business, current_inventory_level, amount_used_personal, amount_used_medium, amount_used_large, amount_used_xlarge)
+INSERT INTO Toppings (topping_name, price, cost_per_unit, current_inventory_level, amount_used_personal, amount_used_medium, amount_used_large, amount_used_xlarge)
 VALUES 
 ('Pepperoni', 1.25, 0.2, 100, 2, 2.75, 3.5, 4.5),
 ('Sausage', 1.25, 0.15, 100, 2.5, 3, 3.5, 4.25),
@@ -20,7 +20,7 @@ VALUES
 ('Bacon', 1.5, 0.25, 89, 1, 1.5, 2, 3);
 
 -- Insert data into Discount table
-INSERT INTO Discount (customer_name, percentage_off, amount_off)
+INSERT INTO Discount (discount_name, percentage_off, amount_off)
 VALUES 
 ('employee', 15, NULL),
 ('Lunch Special Medium', NULL, 1),
@@ -28,33 +28,50 @@ VALUES
 ('Specialty Pizza', NULL, 1.5),
 ('Gameday special', 20, NULL);
 
+--Insert data into base price table
+INSERT INTO BasePrice (base_price_id,pizza_size,crust_type,price,cost)
+VALUES
+(1,'small','Thin',3,0.5),
+(2,'small','Original',3,0.75),
+(3,'small','Pan',3.5,1),
+(4,'small', 'Gluten-Free',4,2),
+(5,'medium','Thin',5,1),
+(6,'medium','Original',5,1.5),
+(7,'medium','Pan',6,2.25),
+(8,'medium','Gluten-Free',6.25,3),
+(9,'large','Thin',8,1.25),
+(10,'large','Original',8,2),
+(11,'large','Pan',9,3),
+(12,'large', 'Gluten-Free',9.5,4),
+(13,'x-large','Thin',10,2),
+(14,'x-large','Original',10,3),
+(15,'x-large','Pan',11.5,4.5),
+(16,'x-large','Gluten-Free',12.5,6);
+
+
 -- Insert data into Orders table
 
--- Insert data into Customer table
-INSERT INTO Customer (customer_name, phone_number, customer_address)
+INSERT INTO Orders (order_id,total_cost,total_price,order_status, order_timestamp,customer_id)
 VALUES
-('Andrew Wilkes-Krier', '740-254-5861', '115 Party Blvd, Athens OH 45701'),
-('Matt Engers', '740-474-9953', NULL),
-('Frank Turner', '740-232-8944', '6745 Wessex St Athens OH 45701'),
-('Milo Auckerman', '740-878-5679', '8879 Suburban Home, Athens OH 45701');
+(1,3.68,13.5,'completed','2024-03-05 12:03',NULL);
 
--- Insert data into Orders table
-INSERT INTO Orders (total_cost, total_price, order_type, customer_id)
+INSERT INTO DineIn (order_id,table_number)
 VALUES
-(3.68, 13.50, 'dine-in', NULL),
-(3.23, 10.60, 'dine-in', NULL),
-(1.40, 6.75, 'dine-in', NULL),
-(3.30 * 6, 10.75 * 6, 'pickup', (SELECT customer_id FROM Customer WHERE customer_name = 'Andrew Wilkes-Krier')),
-(5.59 + 5.59 + 5.68, 14.50 + 17 + 14.00, 'delivery', (SELECT customer_id FROM Customer WHERE customer_name = 'Andrew Wilkes-Krier')),
-(7.85, 16.85, 'pickup', (SELECT customer_id FROM Customer WHERE customer_name = 'Matt Engers')),
-(3.20, 13.25, 'delivery', (SELECT customer_id FROM Customer WHERE customer_name = 'Frank Turner')),
-(3.75 + 2.55, 12 + 12, 'delivery', (SELECT customer_id FROM Customer WHERE customer_name = 'Milo Auckerman'));
+(1,14);
 
--- Insert data into DiscountOnOrder table
-INSERT INTO DiscountOnOrder (order_id, discount_id)
+INSERT INTO Seats (order_id,seat_number)
 VALUES
-((SELECT order_id FROM Orders WHERE total_price = 13.50), (SELECT discount_id FROM Discount WHERE customer_name = 'Lunch Special Large')),
-((SELECT order_id FROM Orders WHERE total_price = 10.60), (SELECT discount_id FROM Discount WHERE customer_name = 'Lunch Special Medium')),
-((SELECT order_id FROM Orders WHERE total_price = 16.85), (SELECT discount_id FROM Discount WHERE customer_name = 'Specialty Pizza')),
-((SELECT order_id FROM Orders WHERE total_price = 14.50 + 17 + 14.00), (SELECT discount_id FROM Discount WHERE customer_name = 'Gameday special')),
-((SELECT order_id FROM Orders WHERE total_price = 12 + 12), (SELECT discount_id FROM Discount WHERE customer_name = 'employee'));
+(1,1),
+(1,2),
+(1,3);
+
+INSERT INTO Pizza (pizza_id,crust_type,pizza_size,order_id)
+VALUES
+(1,'Thin','large',1);
+
+INSERT INTO ToppingsOnPizza (pizza_id,topping_name,amount)
+VALUES
+(1,'Regular Cheese','extra'),
+(1,'Pepperoni','regular'),
+(1,'Sausage','regular');
+
