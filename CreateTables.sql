@@ -1,6 +1,7 @@
 CREATE TABLE Customer (
 	customer_id INT,
-	customer_name VARCHAR(100),
+	customer_fname VARCHAR(100),
+	customer_lname VARCHAR(100),
 	phone_number VARCHAR(15),
 	customer_address VARCHAR(255),
 	PRIMARY KEY(customer_id)
@@ -33,7 +34,6 @@ CREATE TABLE Seats (
 
 CREATE TABLE Delivery (
 	order_id INT,
-	customer_address VARCHAR(255),
 	PRIMARY KEY(order_id),
 	FOREIGN KEY(order_id) REFERENCES Orders(order_id)
 );
@@ -60,6 +60,8 @@ CREATE TABLE Pizza (
 	pizza_id INT,
 	crust_type VARCHAR(50),
 	pizza_size VARCHAR(50),
+	pizza_price DECIMAL(10,2),
+	pizza_cost DECIMAL (10,2),
 	order_id INT,
 	PRIMARY KEY(pizza_id),
 	FOREIGN KEY(order_id) REFERENCES Orders(order_id)
@@ -83,10 +85,10 @@ CREATE TABLE Discount (
 
 CREATE TABLE DiscountOnPizza (
 	pizza_id INT,
-	discount_id INT,
-	PRIMARY KEY(pizza_id, discount_id),
+	discount_name VARCHAR(50),
+	PRIMARY KEY(pizza_id, discount_name),
 	FOREIGN KEY(pizza_id) REFERENCES Pizza(pizza_id),
-	FOREIGN KEY(discount_id) REFERENCES Discount(discount_id)
+	FOREIGN KEY(discount_name) REFERENCES Discount(discount_name)
 );
 
 CREATE TABLE DiscountOnOrder (

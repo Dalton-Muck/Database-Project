@@ -51,27 +51,122 @@ VALUES
 
 -- Insert data into Orders table
 
-INSERT INTO Orders (order_id,total_cost,total_price,order_status, order_timestamp,customer_id)
+INSERT INTO Orders (order_id,order_status, order_timestamp,customer_id)
 VALUES
-(1,3.68,13.5,'completed','2024-03-05 12:03',NULL);
+(1,'completed','2024-03-05 12:03',NULL),
+(2,'completed','2024-03-03 12:05',NULL),
+(3,'completed','2024-03-03 12:05',NULL),
+(4,'completed','2024-03-03 21:30',1),
+(5,'completed','2024-03-05 19:11'1),
+(6,'completed','2024-03-02 17:30',2),
+(7,'completed','2024-03-02 18:17',3),
+(8,'completed','2024-03-06 20:32',4);
 
 INSERT INTO DineIn (order_id,table_number)
 VALUES
-(1,14);
+(1,14),
+(2,4),
+(3,4);
 
 INSERT INTO Seats (order_id,seat_number)
 VALUES
 (1,1),
 (1,2),
-(1,3);
+(1,3),
+(2,1);
 
-INSERT INTO Pizza (pizza_id,crust_type,pizza_size,order_id)
+INSERT INTO Pickup (order_id)
 VALUES
-(1,'Thin','large',1);
+(4);
+
+INSERT INTO Delivery (order_id)
+VALUES
+(5);
+
+INSERT INTO Pizza (pizza_id,crust_type,pizza_size,pizza_price,pizza_cost,order_id)
+VALUES
+(1,'Thin','large',13.50,3.68,1),
+(2,'Pan','medium',10.60,3.23,2),
+(3,'Original','small',6.75,1.40,3),
+(4,'Original','large',10.75,3.30,4),
+(5,'Original','large',10.75,3.30,4),
+(6,'Original','large',10.75,3.30,4),
+(7,'Original','large',10.75,3.30,4),
+(8,'Original','large',10.75,3.30,4),
+(9,'Original','large',10.75,3.30,4),
+(10,'Original','x-large',14.50,5.68,5),
+(11,'Original','x-large',17,5.59,5),
+(12,'Original','x-large',14,5.68,5),
+(13,'Gluten-Free','x-large',16.85,7.85,6),
+(14,'Thin','x-large',13.25,3.20,7),
+(15,'Thin','large',12,3.75,8),
+(16,'Thin','large',12,2.55,8);
 
 INSERT INTO ToppingsOnPizza (pizza_id,topping_name,amount)
 VALUES
 (1,'Regular Cheese','extra'),
 (1,'Pepperoni','regular'),
-(1,'Sausage','regular');
+(1,'Sausage','regular'),
+(2,'Feta Cheese','regular'),
+(2,'Black Olives','regular'),
+(2,'Roma tomato','regular'),
+(2,'Mushrooms','regular'),
+(2,'Banana Peppers','regular'),
+(3,'Regular Cheese','regular'),
+(3,'Chicken','regular'),
+(3,'Banana Peppers','regular'),
+(4,'Regular Cheese','regular'),
+(4,'Pepperoni','regular'),
+(5,'Regular Cheese','regular'),
+(5,'Pepperoni','regular'),
+(6,'Regular Cheese','regular'),
+(6,'Pepperoni','regular'),
+(7,'Regular Cheese','regular'),
+(7,'Pepperoni','regular'),
+(8,'Regular Cheese','regular'),
+(8,'Pepperoni','regular'),
+(9,'Regular Cheese','regular'),
+(9,'Pepperoni','regular'),
+(10,'Four Cheese Blend','regular'),
+(10,'Pepperoni','regular'),
+(10,'Sausage','regular'),
+(11,'Four Cheese Blend','regular'),
+(11,'Ham','extra');
+(11,'Pineapple','extra'),
+(12,'Four Cheese Blend','regular'),
+(12,'Jalapenos','regular'),
+(12,'Bacon','regular'),
+(13,'Green Pepper','regular'),
+(13,'Onion','regular'),
+(13,'Mushrooms','regular'),
+(13,'Black Olives','regular'),
+(13,'Goat Cheese','regular'),
+(14,'Chicken','regular'),
+(14,'Green Peppers','regular'),
+(14,'Onions','regular'),
+(14,'Mushrooms','regular'),
+(14,'Four Cheese Blend','regular'),
+(15,'Four Cheese Blend','extra'),
+(16,'Regular Cheese','regular'),
+(16,'Pepperoni','extra');
 
+
+Insert INTO DiscountOnPizza (pizza_id,discount_name)
+VALUES
+(1,'Lunch Special Large'),
+(2,'Lunch Special Medium'),
+(2,'Specialty Pizza'),
+(11,'Specialty Pizza'),
+(13,,'Specialty Pizza');
+
+INSERT INTO DiscountOnOrder (order_id,discount_id)
+VALUES
+(5,'Gameday special'),
+(8,'employee');
+
+INSERT INTO Customer (customer_id,customer_fname,customer_lname,phone_number,customer_address)
+VALUES
+(1,'Andrew','Wilkes-Krier','740-254-5861','15 Party Blvd, Athens OH 45701'),
+(2,'Matt','Engers','740-474-9953',NULL),
+(3,'Frank','Turner','740-232-8944','6745 Wessex St Athens OH 45701'),
+(4,'Milo','Auckerman','740-878-5679','o 8879 Suburban Home Athens OH 45701');
