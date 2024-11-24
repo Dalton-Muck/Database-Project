@@ -77,18 +77,18 @@ CREATE TABLE ToppingsOnPizza (
 );
 
 CREATE TABLE Discount (
+	discount_id INT,
 	discount_name VARCHAR(50),
 	amount_off DECIMAL(10, 2),
 	percentage_off DECIMAL(5, 2),
-	PRIMARY KEY(discount_name)
+	PRIMARY KEY(discount_id)
 );
 
 CREATE TABLE DiscountOnPizza (
 	pizza_id INT,
 	discount_name VARCHAR(50),
-	PRIMARY KEY(pizza_id, discount_name),
-	FOREIGN KEY(pizza_id) REFERENCES Pizza(pizza_id),
-	FOREIGN KEY(discount_name) REFERENCES Discount(discount_name)
+	PRIMARY KEY(pizza_id),
+	FOREIGN KEY(pizza_id) REFERENCES Pizza(pizza_id)
 );
 
 CREATE TABLE DiscountOnOrder (

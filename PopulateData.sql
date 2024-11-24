@@ -1,4 +1,3 @@
--- Insert data into Toppings table
 INSERT INTO Toppings (topping_name, price, cost_per_unit, current_inventory_level, amount_used_personal, amount_used_medium, amount_used_large, amount_used_xlarge)
 VALUES 
 ('Pepperoni', 1.25, 0.2, 100, 2, 2.75, 3.5, 4.5),
@@ -20,13 +19,13 @@ VALUES
 ('Bacon', 1.5, 0.25, 89, 1, 1.5, 2, 3);
 
 -- Insert data into Discount table
-INSERT INTO Discount (discount_name, percentage_off, amount_off)
+INSERT INTO Discount (discount_id, discount_name, percentage_off, amount_off)
 VALUES 
-('employee', 15, NULL),
-('Lunch Special Medium', NULL, 1),
-('Lunch Special Large', NULL, 2),
-('Specialty Pizza', NULL, 1.5),
-('Gameday special', 20, NULL);
+(1, 'employee', 15, NULL),
+(2, 'Lunch Special Medium', NULL, 1),
+(3, 'Lunch Special Large', NULL, 2),
+(4, 'Specialty Pizza', NULL, 1.5),
+(5, 'Gameday special', 20, NULL);
 
 --Insert data into base price table
 INSERT INTO BasePrice (base_price_id,pizza_size,crust_type,price,cost)
@@ -57,7 +56,7 @@ VALUES
 (2,'completed','2024-03-03 12:05',NULL),
 (3,'completed','2024-03-03 12:05',NULL),
 (4,'completed','2024-03-03 21:30',1),
-(5,'completed','2024-03-05 19:11'1),
+(5,'completed','2024-03-05 19:11',1),
 (6,'completed','2024-03-02 17:30',2),
 (7,'completed','2024-03-02 18:17',3),
 (8,'completed','2024-03-06 20:32',4);
@@ -151,15 +150,15 @@ VALUES
 (16,'Pepperoni','extra');
 
 
-Insert INTO DiscountOnPizza (pizza_id,discount_name)
+INSERT INTO DiscountOnPizza (pizza_id,discount_name)
 VALUES
 (1,'Lunch Special Large'),
 (2,'Lunch Special Medium'),
 (2,'Specialty Pizza'),
 (11,'Specialty Pizza'),
-(13,,'Specialty Pizza');
+(13,'Specialty Pizza');
 
-INSERT INTO DiscountOnOrder (order_id,discount_id)
+INSERT INTO DiscountOnOrder (order_id,discount_name)
 VALUES
 (5,'Gameday special'),
 (8,'employee');
