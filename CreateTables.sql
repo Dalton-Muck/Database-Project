@@ -28,7 +28,8 @@ CREATE TABLE DineIn (
 CREATE TABLE Seats (
 	order_id INT,
 	seat_number INT,
-	PRIMARY KEY(order_id),
+	seat_id INT,
+	PRIMARY KEY(seat_id),
 	FOREIGN KEY(order_id) REFERENCES DineIn(order_id)
 );
 
@@ -44,17 +45,6 @@ CREATE TABLE Pickup (
 	FOREIGN KEY(order_id) REFERENCES Orders(order_id)
 );
 
-CREATE TABLE Toppings (
-	topping_name VARCHAR(50),
-	price DECIMAL(10,2),
-	cost_per_unit DECIMAL(10, 2),
-	current_inventory_level INT,
-	amount_used_personal DECIMAL(10, 2),
-	amount_used_medium DECIMAL(10, 2),
-	amount_used_large DECIMAL(10, 2),
-	amount_used_xlarge DECIMAL(10, 2),
-	PRIMARY KEY(topping_name)
-);
 
 CREATE TABLE Pizza (
 	pizza_id INT,
@@ -66,15 +56,26 @@ CREATE TABLE Pizza (
 	PRIMARY KEY(pizza_id),
 	FOREIGN KEY(order_id) REFERENCES Orders(order_id)
 );
-
+CREATE TABLE Toppings (
+	topping_name VARCHAR(50),
+	price DECIMAL(10,2),
+	cost_per_unit DECIMAL(10, 2),
+	current_inventory_level INT,
+	amount_used_personal DECIMAL(10, 2),
+	amount_used_medium DECIMAL(10, 2),
+	amount_used_large DECIMAL(10, 2),
+	amount_used_xlarge DECIMAL(10, 2),
+	PRIMARY KEY(topping_name)
+);
 CREATE TABLE ToppingsOnPizza (
 	pizza_id INT,
 	topping_name VARCHAR(50),
 	amount VARCHAR(50),
 	PRIMARY KEY(pizza_id, topping_name),
-	FOREIGN KEY(pizza_id) REFERENCES Pizza(pizza_id),
-	FOREIGN KEY(topping_name) REFERENCES Toppings(topping_name)
+	FOREIGN	KEY(topping_name) REFERENCES Toppings(topping_name),
+	FOREIGN KEY(pizza_id) REFERENCES Pizza(pizza_id)
 );
+
 
 CREATE TABLE Discount (
 	discount_id INT,
@@ -86,17 +87,17 @@ CREATE TABLE Discount (
 
 CREATE TABLE DiscountOnPizza (
 	pizza_id INT,
+	discount_number INT,
 	discount_name VARCHAR(50),
-	PRIMARY KEY(pizza_id),
+	PRIMARY KEY(discount_number),
 	FOREIGN KEY(pizza_id) REFERENCES Pizza(pizza_id)
 );
 
 CREATE TABLE DiscountOnOrder (
 	order_id INT,
-	discount_id INT,
-	PRIMARY KEY(order_id, discount_id),
-	FOREIGN KEY(order_id) REFERENCES Orders(order_id),
-	FOREIGN KEY(discount_id) REFERENCES Discount(discount_id)
+	discount_name VARCHAR(50),
+	PRIMARY KEY(order_id),
+	FOREIGN KEY(order_id) REFERENCES Orders(order_id)
 );
 
 CREATE TABLE BasePrice (
