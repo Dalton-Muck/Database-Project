@@ -10,7 +10,7 @@ SELECT * FROM DiscountOnPizza;
 
 SELECT * FROM DiscountOnOrder;
 
-SELECT * FROM BasePrice;
+SELECT * FROM Base;
 
 SELECT * FROM Orders;
 
