@@ -28,8 +28,7 @@ CREATE TABLE DineIn (
 CREATE TABLE Seats (
 	order_id INT,
 	seat_number INT,
-	seat_id INT,
-	PRIMARY KEY(seat_id),
+	PRIMARY KEY(order_id,seat_number),
 	FOREIGN KEY(order_id) REFERENCES DineIn(order_id)
 );
 
@@ -45,17 +44,6 @@ CREATE TABLE Pickup (
 	FOREIGN KEY(order_id) REFERENCES Orders(order_id)
 );
 
-
-CREATE TABLE Pizza (
-	pizza_id INT,
-	crust_type VARCHAR(50),
-	pizza_size VARCHAR(50),
-	pizza_price DECIMAL(10,2),
-	pizza_cost DECIMAL (10,2),
-	order_id INT,
-	PRIMARY KEY(pizza_id),
-	FOREIGN KEY(order_id) REFERENCES Orders(order_id)
-);
 CREATE TABLE Toppings (
 	topping_name VARCHAR(50),
 	price DECIMAL(10,2),
@@ -67,15 +55,34 @@ CREATE TABLE Toppings (
 	amount_used_xlarge DECIMAL(10, 2),
 	PRIMARY KEY(topping_name)
 );
+
+CREATE TABLE BasePrice (
+	pizza_size VARCHAR(50),
+	crust_type VARCHAR(50),
+	base_price_id INT,
+	cost DECIMAL(10, 2),
+	price DECIMAL(10,2),
+	PRIMARY KEY(base_price_id)
+);
+
+
+CREATE TABLE Pizza (
+	pizza_id INT,
+	base_price_id INT,
+	order_id INT,
+	PRIMARY KEY(pizza_id),
+	FOREIGN KEY(order_id) REFERENCES Orders(order_id),
+	FOREIGN KEY(base_price_id) REFERENCES BasePrice(base_price_id)
+);
+
 CREATE TABLE ToppingsOnPizza (
 	pizza_id INT,
 	topping_name VARCHAR(50),
 	amount VARCHAR(50),
 	PRIMARY KEY(pizza_id, topping_name),
-	FOREIGN	KEY(topping_name) REFERENCES Toppings(topping_name),
-	FOREIGN KEY(pizza_id) REFERENCES Pizza(pizza_id)
+	FOREIGN KEY(pizza_id) REFERENCES Pizza(pizza_id),
+	FOREIGN KEY(topping_name) REFERENCES Toppings(topping_name)
 );
-
 
 CREATE TABLE Discount (
 	discount_id INT,
@@ -87,25 +94,16 @@ CREATE TABLE Discount (
 
 CREATE TABLE DiscountOnPizza (
 	pizza_id INT,
-	discount_number INT,
-	discount_name VARCHAR(50),
-	PRIMARY KEY(discount_number),
-	FOREIGN KEY(pizza_id) REFERENCES Pizza(pizza_id)
+	discount_id INT,
+	PRIMARY KEY(pizza_id, discount_id),
+	FOREIGN KEY(pizza_id) REFERENCES Pizza(pizza_id),
+	FOREIGN KEY(discount_id) REFERENCES Discount(discount_id)
 );
 
 CREATE TABLE DiscountOnOrder (
 	order_id INT,
-	discount_name VARCHAR(50),
-	PRIMARY KEY(order_id),
-	FOREIGN KEY(order_id) REFERENCES Orders(order_id)
+	discount_id INT,
+	PRIMARY KEY(order_id, discount_id),
+	FOREIGN KEY(order_id) REFERENCES Orders(order_id),
+	FOREIGN KEY(discount_id) REFERENCES Discount(discount_id)
 );
-
-CREATE TABLE BasePrice (
-	pizza_size VARCHAR(50),
-	crust_type VARCHAR(50),
-	base_price_id INT,
-	cost DECIMAL(10, 2),
-	price DECIMAL(10,2),
-	PRIMARY KEY(base_price_id)
-);
-
