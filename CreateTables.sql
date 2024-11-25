@@ -44,6 +44,17 @@ CREATE TABLE Pickup (
 	FOREIGN KEY(order_id) REFERENCES Orders(order_id)
 );
 
+
+CREATE TABLE Pizza (
+	pizza_id INT,
+	crust_type VARCHAR(50),
+	pizza_size VARCHAR(50),
+	pizza_price DECIMAL(10,2),
+	pizza_cost DECIMAL (10,2),
+	order_id INT,
+	PRIMARY KEY(pizza_id),
+	FOREIGN KEY(order_id) REFERENCES Orders(order_id)
+);
 CREATE TABLE Toppings (
 	topping_name VARCHAR(50),
 	price DECIMAL(10,2),
@@ -80,15 +91,18 @@ CREATE TABLE ToppingsOnPizza (
 	topping_name VARCHAR(50),
 	amount VARCHAR(50),
 	PRIMARY KEY(pizza_id, topping_name),
-	FOREIGN KEY(pizza_id) REFERENCES Pizza(pizza_id),
-	FOREIGN KEY(topping_name) REFERENCES Toppings(topping_name)
+	FOREIGN	KEY(topping_name) REFERENCES Toppings(topping_name),
+	FOREIGN KEY(pizza_id) REFERENCES Pizza(pizza_id)
 );
 
+
 CREATE TABLE Discount (
+	discount_id INT,
 	discount_id INT,
 	discount_name VARCHAR(50),
 	amount_off DECIMAL(10, 2),
 	percentage_off DECIMAL(5, 2),
+	PRIMARY KEY(discount_id)
 	PRIMARY KEY(discount_id)
 );
 

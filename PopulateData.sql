@@ -1,4 +1,10 @@
--- Insert data into Toppings table
+INSERT INTO Customer (customer_id,customer_fname,customer_lname,phone_number,customer_address)
+VALUES
+(1,'Andrew','Wilkes-Krier','740-254-5861','15 Party Blvd, Athens OH 45701'),
+(2,'Matt','Engers','740-474-9953',NULL),
+(3,'Frank','Turner','740-232-8944','6745 Wessex St Athens OH 45701'),
+(4,'Milo','Auckerman','740-878-5679','o 8879 Suburban Home Athens OH 45701');
+
 INSERT INTO Toppings (topping_name, price, cost_per_unit, current_inventory_level, amount_used_personal, amount_used_medium, amount_used_large, amount_used_xlarge)
 VALUES 
 ('Pepperoni', 1.25, 0.2, 100, 2, 2.75, 3.5, 4.5),
@@ -76,12 +82,12 @@ VALUES
 (2,4),
 (3,4);
 
-INSERT INTO Seats (order_id,seat_number)
+INSERT INTO Seats (seat_id,order_id,seat_number)
 VALUES
-(1,1),
-(1,2),
-(1,3),
-(2,1);
+(1,1,1),
+(2,1,2),
+(3,1,3),
+(4,2,1);
 
 INSERT INTO Pickup (order_id)
 VALUES
@@ -143,6 +149,7 @@ VALUES
 (10,'Sausage','regular'),
 (11,'Four Cheese Blend','regular'),
 (11,'Ham','extra'),
+(11,'Ham','extra'),
 (11,'Pineapple','extra'),
 (12,'Four Cheese Blend','regular'),
 (12,'Jalapenos','regular'),
@@ -170,7 +177,7 @@ VALUES
 (11,4),
 (13,4);
 
-INSERT INTO DiscountOnOrder (order_id,discount_id)
+INSERT INTO DiscountOnOrder (order_id,discount_name)
 VALUES
 (5,5),
 (8,1);
