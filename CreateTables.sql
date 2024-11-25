@@ -9,8 +9,6 @@ CREATE TABLE Customer (
 
 CREATE TABLE Orders (
 	order_id INT,
-	total_cost DECIMAL(10, 2),
-	total_price DECIMAL(10, 2),
 	order_status VARCHAR(50),
 	order_timestamp TIMESTAMP,
 	customer_id INT,
@@ -28,7 +26,7 @@ CREATE TABLE DineIn (
 CREATE TABLE Seats (
 	order_id INT,
 	seat_number INT,
-	PRIMARY KEY(order_id),
+	PRIMARY KEY(order_id,seat_number),
 	FOREIGN KEY(order_id) REFERENCES DineIn(order_id)
 );
 
@@ -56,19 +54,27 @@ CREATE TABLE Toppings (
 	PRIMARY KEY(topping_name)
 );
 
+CREATE TABLE Base (
+	base_price_id INT,
+	pizza_size VARCHAR(50),
+	crust_type VARCHAR(50),
+	price DECIMAL(10,2),
+	cost DECIMAL(10, 2),
+	PRIMARY KEY(base_price_id)
+);
+
+
 CREATE TABLE Pizza (
 	pizza_id INT,
-	crust_type VARCHAR(50),
-	pizza_size VARCHAR(50),
-	pizza_price DECIMAL(10,2),
-	pizza_cost DECIMAL (10,2),
+	base_price_id INT,
 	order_id INT,
 	PRIMARY KEY(pizza_id),
-	FOREIGN KEY(order_id) REFERENCES Orders(order_id)
+	FOREIGN KEY(order_id) REFERENCES Orders(order_id),
+	FOREIGN KEY(base_price_id) REFERENCES Base(base_price_id)
 );
 
 CREATE TABLE ToppingsOnPizza (
-	pizza_id INT,
+	pizza_id INT ,
 	topping_name VARCHAR(50),
 	amount VARCHAR(50),
 	PRIMARY KEY(pizza_id, topping_name),
@@ -77,18 +83,19 @@ CREATE TABLE ToppingsOnPizza (
 );
 
 CREATE TABLE Discount (
+	discount_id INT,
 	discount_name VARCHAR(50),
 	amount_off DECIMAL(10, 2),
 	percentage_off DECIMAL(5, 2),
-	PRIMARY KEY(discount_name)
+	PRIMARY KEY(discount_id)
 );
 
 CREATE TABLE DiscountOnPizza (
 	pizza_id INT,
-	discount_name VARCHAR(50),
-	PRIMARY KEY(pizza_id, discount_name),
+	discount_id INT,
+	PRIMARY KEY(pizza_id,discount_id),
 	FOREIGN KEY(pizza_id) REFERENCES Pizza(pizza_id),
-	FOREIGN KEY(discount_name) REFERENCES Discount(discount_name)
+	FOREIGN KEY(discount_id) REFERENCES Discount(discount_id)
 );
 
 CREATE TABLE DiscountOnOrder (
@@ -99,12 +106,5 @@ CREATE TABLE DiscountOnOrder (
 	FOREIGN KEY(discount_id) REFERENCES Discount(discount_id)
 );
 
-CREATE TABLE BasePrice (
-	pizza_size VARCHAR(50),
-	crust_type VARCHAR(50),
-	base_price_id INT,
-	cost DECIMAL(10, 2),
-	price DECIMAL(10,2),
-	PRIMARY KEY(base_price_id)
-);
+
 
