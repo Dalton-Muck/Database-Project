@@ -145,12 +145,12 @@ SELECT
     SUM(
         CASE 
             WHEN DATE(o.order_timestamp) = '2024-03-03' THEN 
-                CASE p.base_price_id
-                    WHEN 1 THEN t.amount_used_personal
-                    WHEN 2 THEN t.amount_used_medium
-                    WHEN 3 THEN t.amount_used_large
-                    WHEN 4 THEN t.amount_used_xlarge
-                    ELSE 0
+                CASE 
+                            WHEN p.base_price_id IN (1, 2, 3, 4) THEN t.amount_used_personal
+                            WHEN p.base_price_id IN (5, 6, 7, 8) THEN t.amount_used_medium
+                            WHEN p.base_price_id IN (9, 10, 11, 12) THEN t.amount_used_large
+                            WHEN p.base_price_id IN (13, 14, 15, 16) THEN t.amount_used_xlarge
+                            ELSE 0 
                 END
             ELSE 0
         END
@@ -176,7 +176,7 @@ ORDER BY
 --         left join Toppings AS t ON t.topping_name=tp.topping_name
 --     GROUP BY  p.pizza_id;
 
-SELECT x.pizza_size, AVG(x.Pizza_price) AS "Average pizza price", AVG(Pizza_cost) AS "Average pizza price"
+SELECT x.pizza_size,  COUNT(x.pizza_size) AS "Total number of pizzas ordered", AVG(x.Pizza_price) AS "Average pizza price", AVG(Pizza_cost) AS "Average pizza cost"
 FROM (
     SELECT pizza_size, bp.price + (SUM(t.price)) AS Pizza_price,
         CASE 
@@ -193,14 +193,23 @@ FROM (
 GROUP BY x.pizza_size;
 
 -- 10 Crust Type Report
-SELECT 
-    bp.crust_type,
-    COUNT(p.pizza_id) AS total_pizzas_ordered,
-    AVG(bp.price) AS average_price,
-    AVG(bp.cost) AS average_cost
-FROM 
-    Pizza p
-JOIN 
-    BasePrice bp ON p.base_price_id = bp.base_price_id
-GROUP BY 
-    bp.crust_type;
+SELECT x.crust_type,  
+    COUNT(x.crust_type) AS "Total number of pizzas ordered", 
+    AVG(x.Pizza_price) AS "Average pizza price", 
+    AVG(x.Pizza_cost) AS "Average pizza cost"
+FROM (
+    SELECT bp.crust_type, 
+        bp.price + SUM(t.price) AS Pizza_price,
+        CASE 
+            WHEN bp.pizza_size = 'small' THEN bp.cost + SUM(t.cost_per_unit * t.amount_used_personal)
+            WHEN bp.pizza_size = 'medium' THEN bp.cost + SUM(t.cost_per_unit * t.amount_used_medium)
+            WHEN bp.pizza_size = 'large' THEN bp.cost + SUM(t.cost_per_unit * t.amount_used_large)
+            WHEN bp.pizza_size = 'x-large' THEN bp.cost + SUM(t.cost_per_unit * t.amount_used_xlarge)
+        END AS Pizza_cost
+    FROM Pizza AS p
+    JOIN BasePrice AS bp ON p.base_price_id = bp.base_price_id
+    LEFT JOIN ToppingsOnPizza AS tp ON p.pizza_id = tp.pizza_id
+    LEFT JOIN Toppings AS t ON t.topping_name = tp.topping_name
+    GROUP BY p.pizza_id, bp.crust_type, bp.pizza_size, bp.price, bp.cost
+) x
+GROUP BY x.crust_type;
