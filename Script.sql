@@ -170,46 +170,41 @@ ORDER BY
 -- 9. Pizza Size report: For each Pizza size, show the total number of pizzas ordered, average price,
 -- and average cost of those pizzas.
 
---  SELECT bp.pizza_size, bp.price + (SUM(t.price)) AS Pizza_price, bp.cost + (SUM(t.cost_per_unit)) AS Pizza_cost
---     FROM ((Pizza AS p join BasePrice AS bp ON p.base_price_id=bp.base_price_id) 
---         left join ToppingsOnPizza AS tp ON  p.pizza_id=tp.pizza_id )
---         left join Toppings AS t ON t.topping_name=tp.topping_name
---     GROUP BY  p.pizza_id;
-
-SELECT x.pizza_size,  COUNT(x.pizza_size) AS "Total number of pizzas ordered", AVG(x.Pizza_price) AS "Average pizza price", AVG(Pizza_cost) AS "Average pizza cost"
+SELECT x.pizza_size, COUNT(x.pizza_size) AS "Total number of pizzas", AVG(x.Pizza_price) AS "Average pizza price", AVG(Pizza_cost) AS "Average pizza cost"
 FROM (
-    SELECT pizza_size, bp.price + (SUM(t.price)) AS Pizza_price,
+    SELECT pizza_size, (bp.price + (SUM(t.price)) - IFNULL(MIN(d.amount_off),0)) AS Pizza_price,
         CASE 
             WHEN pizza_size = 'small' THEN bp.cost + (SUM(t.cost_per_unit * t.amount_used_personal)) 
             WHEN pizza_size = 'medium' THEN bp.cost + (SUM(t.cost_per_unit * t.amount_used_medium)) 
             WHEN pizza_size = 'large' THEN bp.cost + (SUM(t.cost_per_unit * t.amount_used_large)) 
             WHEN pizza_size = 'x-large' THEN bp.cost + (SUM(t.cost_per_unit * t.amount_used_xlarge)) 
         END AS Pizza_cost
-    FROM ((Pizza AS p join BasePrice AS bp ON p.base_price_id=bp.base_price_id) 
+    FROM ((((Pizza AS p join BasePrice AS bp ON p.base_price_id=bp.base_price_id) 
          left join ToppingsOnPizza AS tp ON  p.pizza_id=tp.pizza_id )
-        left join Toppings AS t ON t.topping_name=tp.topping_name
+        left join Toppings AS t ON t.topping_name=tp.topping_name )
+        left join DiscountOnPizza AS dp ON p.pizza_id=dp.pizza_id)
+        left join Discount AS d ON d.discount_id=dp.discount_id
     GROUP BY  p.pizza_id
 ) x
 GROUP BY x.pizza_size;
 
--- 10 Crust Type Report
-SELECT x.crust_type,  
-    COUNT(x.crust_type) AS "Total number of pizzas ordered", 
-    AVG(x.Pizza_price) AS "Average pizza price", 
-    AVG(x.Pizza_cost) AS "Average pizza cost"
+-- 10. Crust type report: For each crust type, show the total number of pizzas ordered, average price,
+-- and average cost of those pizzas.
+
+SELECT x.crust_type, COUNT(x.crust_type) AS "Total number of pizzas", AVG(x.Pizza_price) AS "Average pizza price", AVG(Pizza_cost) AS "Average pizza cost"
 FROM (
-    SELECT bp.crust_type, 
-        bp.price + SUM(t.price) AS Pizza_price,
+    SELECT crust_type, (bp.price + (SUM(t.price)) - IFNULL(MIN(d.amount_off),0)) AS Pizza_price,
         CASE 
-            WHEN bp.pizza_size = 'small' THEN bp.cost + SUM(t.cost_per_unit * t.amount_used_personal)
-            WHEN bp.pizza_size = 'medium' THEN bp.cost + SUM(t.cost_per_unit * t.amount_used_medium)
-            WHEN bp.pizza_size = 'large' THEN bp.cost + SUM(t.cost_per_unit * t.amount_used_large)
-            WHEN bp.pizza_size = 'x-large' THEN bp.cost + SUM(t.cost_per_unit * t.amount_used_xlarge)
+            WHEN pizza_size = 'small' THEN bp.cost + (SUM(t.cost_per_unit * t.amount_used_personal)) 
+            WHEN pizza_size = 'medium' THEN bp.cost + (SUM(t.cost_per_unit * t.amount_used_medium)) 
+            WHEN pizza_size = 'large' THEN bp.cost + (SUM(t.cost_per_unit * t.amount_used_large)) 
+            WHEN pizza_size = 'x-large' THEN bp.cost + (SUM(t.cost_per_unit * t.amount_used_xlarge)) 
         END AS Pizza_cost
-    FROM Pizza AS p
-    JOIN BasePrice AS bp ON p.base_price_id = bp.base_price_id
-    LEFT JOIN ToppingsOnPizza AS tp ON p.pizza_id = tp.pizza_id
-    LEFT JOIN Toppings AS t ON t.topping_name = tp.topping_name
-    GROUP BY p.pizza_id, bp.crust_type, bp.pizza_size, bp.price, bp.cost
+    FROM ((((Pizza AS p join BasePrice AS bp ON p.base_price_id=bp.base_price_id) 
+         left join ToppingsOnPizza AS tp ON  p.pizza_id=tp.pizza_id )
+        left join Toppings AS t ON t.topping_name=tp.topping_name )
+        left join DiscountOnPizza AS dp ON p.pizza_id=dp.pizza_id)
+        left join Discount AS d ON d.discount_id=dp.discount_id
+    GROUP BY  p.pizza_id
 ) x
 GROUP BY x.crust_type;
